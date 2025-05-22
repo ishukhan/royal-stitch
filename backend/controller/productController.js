@@ -8,25 +8,27 @@ export const uploadProduct = async (req, res) => {
       newId = Number(products[0].id) + 1;
     }
 
-    const {  name, category, new_price, old_price, image, images, description } = req.body;
-
-    // ✅ Validate the image URL instead of expecting a file
-    if (!image) {
-      return res.status(400).json({ message: "Product image is required" });
+    // req.files = { product: [...], images: [...] }
+    if (!req.files || (!req.files["product"] && !req.files["images"])) {
+      return res.status(400).json({ message: "Images are required" });
     }
 
-    const newProduct = new Product({
-  id: newId,
-  name,
-  category,
-  image,        // main image
-  images,       // additional image URLs (array)
-  description,  // product description
-  new_price,
-  old_price,
-});
+    const mainImage = req.files["product"]?.[0]?.path || "";
+    const additionalImages = req.files["images"]?.map(file => file.path) || [];
 
-    // console.log("Saving product:", newProduct);
+    const { name, category, new_price, old_price, description } = req.body;
+
+    const newProduct = new Product({
+      id: newId,
+      name,
+      category,
+      image: mainImage,       // main image
+      images: additionalImages, // array of more images
+      description,
+      new_price,
+      old_price,
+    });
+
     await newProduct.save();
 
     res.status(201).json({
@@ -38,6 +40,7 @@ export const uploadProduct = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 export const removeProduct = async (req, res) => {
   try {

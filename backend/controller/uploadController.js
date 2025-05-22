@@ -3,7 +3,8 @@ export function uploadFile(req, res) {
     return res.status(400).json({ success: false, message: "No file uploaded" });
   }
 
-  const image_url = `${req.protocol}://${req.get("host")}/images/${req.file.filename}`;
+  // Cloudinary automatically returns the secure_url
+  const image_url = req.file.path;
 
   res.status(200).json({
     success: true,

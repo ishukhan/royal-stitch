@@ -11,7 +11,10 @@ import {
 
 const router = express.Router();
 
-router.post("/addProduct", upload.single("image"), uploadProduct);
+router.post("/addProduct",  upload.fields([
+    { name: "product", maxCount: 1 },
+    { name: "images", maxCount: 3  },
+  ]), uploadProduct);
 
 router.post("/removeProduct", removeProduct);
 

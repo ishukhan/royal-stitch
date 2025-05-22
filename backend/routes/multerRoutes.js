@@ -7,4 +7,5 @@ const router = express.Router();
 
 router.post("/upload", upload.single("product"), uploadFile);
 
+
 export default router;
