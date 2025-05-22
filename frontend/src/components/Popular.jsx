@@ -8,7 +8,7 @@ const Popular = () => {
     const popularCollection = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3000/api/popularproduct"
+          "https://royal-stitch.onrender.com/api/popularproduct"
         );
         const data = await response.json();
         if (Array.isArray(data.newProduct)) {

@@ -10,7 +10,7 @@ const NewsLatter = () => {
     setStatus('Submitting...');
 
     try {
-      const res = await fetch('http://localhost:3000/api/subscribe', {
+      const res = await fetch('https://royal-stitch.onrender.com/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),

@@ -11,7 +11,7 @@ export const ShopContextProvider = ({ children }) => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/allProduct');
+        const response = await fetch('https://royal-stitch.onrender.com/api/allProduct');
         const data = await response.json();
 
         // Use data.products if the API wraps data

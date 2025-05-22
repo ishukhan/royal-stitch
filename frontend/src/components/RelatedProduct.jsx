@@ -9,7 +9,7 @@ const RelatedProduct = () => {
     const fetchCollection = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3000/api/relatedproduct"
+          "https://royal-stitch.onrender.com/api/relatedproduct"
         );
         const data = await response.json();
         // console.log("api response : ", data)

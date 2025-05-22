@@ -7,7 +7,7 @@ const NewCollection = () => {
   useEffect(() => {
     const fetchCollection = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/newCollection");
+        const response = await fetch("https://royal-stitch.onrender.com/api/newCollection");
         const data = await response.json();
 
         // console.log("API response:", typeof(data)); 
