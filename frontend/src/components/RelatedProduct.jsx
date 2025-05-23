@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import POPULAR from "../assets/popular";
 import Item from "./Item";
 
 const RelatedProduct = () => {
@@ -28,12 +27,12 @@ const RelatedProduct = () => {
   return (
     <section className="bg-primary">
       <div className="max_padd_container py-12 xl:py-28 xl:w-[88%]">
-        <h4 className="h3 text-center">Popular Designe</h4>
+        <h4 className="h3 text-center">Related Designe</h4>
         <hr className="h-[3px] md:w-1/2 mx-auto bg-gradient-to-l from-transparent via-black to-transparent mb-16" />
         {/* container  */}
         <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 ">
-         {popularProducts.length > 0 ? (
-            popularProducts.map((item) => (
+         {relatedCategory.length > 0 ? (
+            relatedCategory.map((item) => (
               <Item
                 key={item.id}
                 id={item.id}
