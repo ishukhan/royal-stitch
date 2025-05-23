@@ -1,6 +1,5 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
-import addProduct from '../assets/addProduct.png'
+import addProducticon from '../assets/addProduct.png'
 import allProduct from "../assets/productlist.png"
 
 const SideBar = () => {
