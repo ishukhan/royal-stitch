@@ -57,7 +57,7 @@ const AddProduct = () => {
 
     try {
       // Upload main image
-      const uploadRes = await fetch("http://localhost:3000/api/upload", {
+      const uploadRes = await fetch("https://royal-stitch.onrender.com/api/upload", {
         method: "POST",
         headers: { Accept: "application/json" },
         body: formData,
@@ -74,7 +74,7 @@ const AddProduct = () => {
         let thumbForm = new FormData();
         thumbForm.append("product", file);
 
-        const res = await fetch("http://localhost:3000/api/upload", {
+        const res = await fetch("https://royal-stitch.onrender.com/api/upload", {
           method: "POST",
           headers: { Accept: "application/json" },
           body: thumbForm,
@@ -93,7 +93,7 @@ const AddProduct = () => {
       };
 
       // Upload product
-      const addRes = await fetch("http://localhost:3000/api/addProduct", {
+      const addRes = await fetch("https://royal-stitch.onrender.com/api/addProduct", {
         method: "POST",
         headers: {
           Accept: "application/json",

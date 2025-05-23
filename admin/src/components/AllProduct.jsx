@@ -10,7 +10,7 @@ const AllProduct = () => {
   const fetchInfo = async () => {
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:3000/api/allProduct");
+      const res = await fetch("https://royal-stitch.onrender.com/api/allProduct");
       const data = await res.json();
       setAllProduct(data.products || data);
     } catch (error) {
@@ -26,7 +26,7 @@ const AllProduct = () => {
 
   const removeProduct = async (id) => {
     try {
-      const res = await fetch("http://localhost:3000/api/removeProduct", {
+      const res = await fetch("https://royal-stitch.onrender.com/api/removeProduct", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
