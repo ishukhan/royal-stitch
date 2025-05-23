@@ -1,12 +1,12 @@
 import { useState } from "react";
 import uploadArea from "../assets/upload_area.svg";
 import { MdAdd } from "react-icons/md";
+import Swal from "sweetalert2";
 
 const AddProduct = () => {
   const [image, setImage] = useState(null); // main image
   const [thumbImages, setThumbImages] = useState([]); // thumbnail images
-  const [modalMessage, setModalMessage] = useState("");
-  const [showModal, setShowModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [designeDetail, setDesigneDetail] = useState({
     name: "",
@@ -24,13 +24,18 @@ const AddProduct = () => {
 
   const handleThumbChange = (e) => {
     if (e.target.files) {
-      setThumbImages([...e.target.files]);
+      const files = Array.from(e.target.files);
+      if (files.length > 4) {
+        Swal.fire({
+          icon: "warning",
+          title: "Maximum 4 thumbnails allowed",
+          text: "Only the first 4 images will be selected",
+        });
+        setThumbImages(files.slice(0, 4));
+      } else {
+        setThumbImages(files);
+      }
     }
-  };
-
-  const showPopup = (message) => {
-    setModalMessage(message);
-    setShowModal(true);
   };
 
   const imageHandler = (e) => {
@@ -40,66 +45,105 @@ const AddProduct = () => {
   };
 
   const add_designe = async () => {
-  const { name, category, old_price, new_price, description } = designeDetail;
+    const { name, category, old_price, new_price, description } = designeDetail;
 
-  if (!name || !category || !old_price || !new_price || !description) {
-    showPopup("Please fill all required fields.");
-    return;
-  }
-
-  if (!image) {
-    showPopup("Please upload a main product image.");
-    return;
-  }
-
-  try {
-    // Prepare full FormData instead of uploading separately
-    const formData = new FormData();
-    formData.append("product", image); // main image
-
-    thumbImages.forEach((file) => {
-      formData.append("images", file); // thumbnails
-    });
-
-    formData.append("name", name);
-    formData.append("category", category);
-    formData.append("new_price", new_price);
-    formData.append("old_price", old_price);
-    formData.append("description", description);
-
-    // Send everything in one request to /addProduct
-    const addRes = await fetch("https://royal-stitch.onrender.com/api/addProduct", {
-      method: "POST",
-      body: formData,
-    });
-
-    const result = await addRes.json();
-
-    if (result.product) {
-      showPopup("✅ Product added successfully!");
-
-      // Reset form
-      setDesigneDetail({
-        name: "",
-        image: "",
-        images: [],
-        description: "",
-        category: "men",
-        new_price: "",
-        old_price: "",
+    // Validation
+    if (!name || !category || !old_price || !new_price || !description) {
+      Swal.fire({
+        icon: "error",
+        title: "Missing Fields",
+        text: "Please fill all required fields",
       });
-      setImage(null);
-      setThumbImages([]);
-    } else {
-      showPopup("❌ Upload failed: " + (result.message || "Unknown error"));
+      return;
     }
-  } catch (err) {
-    console.error("Upload error:", err);
-    showPopup("❌ Something went wrong. Please try again.");
-  }
-};
 
+    if (!image) {
+      Swal.fire({
+        icon: "error",
+        title: "Main Image Required",
+        text: "Please upload a main product image",
+      });
+      return;
+    }
 
+    if (isNaN(old_price) || isNaN(new_price)) {
+      Swal.fire({
+        icon: "error",
+        title: "Invalid Price",
+        text: "Prices must be numbers",
+      });
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+
+      // Show loading alert
+      Swal.fire({
+        title: "Uploading Product",
+        html: "Please wait...",
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+
+      const formData = new FormData();
+      formData.append("product", image); // main image
+
+      thumbImages.forEach((file) => {
+        formData.append("images", file); // thumbnails
+      });
+
+      formData.append("name", name);
+      formData.append("category", category);
+      formData.append("new_price", new_price);
+      formData.append("old_price", old_price);
+      formData.append("description", description);
+
+      const addRes = await fetch(
+        "https://royal-stitch.onrender.com/api/addProduct",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      const result = await addRes.json();
+
+      if (result.product) {
+        Swal.fire({
+          icon: "success",
+          title: "Success!",
+          text: "Product added successfully!",
+        });
+
+        // Reset form
+        setDesigneDetail({
+          name: "",
+          image: "",
+          images: [],
+          description: "",
+          category: "men",
+          new_price: "",
+          old_price: "",
+        });
+        setImage(null);
+        setThumbImages([]);
+      } else {
+        throw new Error(result.message || "Failed to add product");
+      }
+    } catch (err) {
+      console.error("Upload error:", err);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: err.message || "Something went wrong. Please try again.",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
     <>
       <div className="p-8 bg-white w-full rounded-sm mt-4 lg:m-7">
@@ -185,7 +229,9 @@ const AddProduct = () => {
         </div>
 
         <div className="mb-4">
-          <label className="block mb-2 font-medium">Thumbnail Images (4 max):</label>
+          <label className="block mb-2 font-medium">
+            Thumbnail Images (4 max):
+          </label>
           <input
             type="file"
             multiple
@@ -208,29 +254,20 @@ const AddProduct = () => {
 
         <button
           onClick={add_designe}
-          className="btn_dark_rounded mt-4 flexCenter gap-x-1"
+          disabled={isLoading}
+          className="btn_dark_rounded mt-4 flexCenter gap-x-1 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <MdAdd />
-          Add Product
+          {isLoading ? (
+            "Uploading..."
+          ) : (
+            <>
+              <MdAdd />
+              Add Product
+            </>
+          )}
         </button>
       </div>
-
-      {/* ✅ Modal Popup */}
-      {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
-          <div className="bg-white p-6 rounded-xl shadow-md w-80 text-center">
-            <h2 className="text-lg font-semibold mb-4">{modalMessage}</h2>
-            <button
-              onClick={() => setShowModal(false)}
-              className="bg-blue-600 text-white px-4 py-2 rounded-md"
-            >
-              OK
-            </button>
-          </div>
-        </div>
-      )}
     </>
   );
 };
-
 export default AddProduct;
