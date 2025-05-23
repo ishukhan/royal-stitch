@@ -40,93 +40,65 @@ const AddProduct = () => {
   };
 
   const add_designe = async () => {
-    const { name, category, old_price, new_price, description } = designeDetail;
+  const { name, category, old_price, new_price, description } = designeDetail;
 
-    if (!name || !category || !old_price || !new_price || !description) {
-      showPopup("Please fill all required fields.");
-      return;
-    }
+  if (!name || !category || !old_price || !new_price || !description) {
+    showPopup("Please fill all required fields.");
+    return;
+  }
 
-    if (!image) {
-      showPopup("Please upload a main product image.");
-      return;
-    }
+  if (!image) {
+    showPopup("Please upload a main product image.");
+    return;
+  }
 
-    let formData = new FormData();
-    formData.append("product", image);
+  try {
+    // Prepare full FormData instead of uploading separately
+    const formData = new FormData();
+    formData.append("product", image); // main image
 
-    try {
-      // Upload main image
-      const uploadRes = await fetch("https://royal-stitch.onrender.com/api/upload", {
-        method: "POST",
-        headers: { Accept: "application/json" },
-        body: formData,
+    thumbImages.forEach((file) => {
+      formData.append("images", file); // thumbnails
+    });
+
+    formData.append("name", name);
+    formData.append("category", category);
+    formData.append("new_price", new_price);
+    formData.append("old_price", old_price);
+    formData.append("description", description);
+
+    // Send everything in one request to /addProduct
+    const addRes = await fetch("https://royal-stitch.onrender.com/api/addProduct", {
+      method: "POST",
+      body: formData,
+    });
+
+    const result = await addRes.json();
+
+    if (result.product) {
+      showPopup("✅ Product added successfully!");
+
+      // Reset form
+      setDesigneDetail({
+        name: "",
+        image: "",
+        images: [],
+        description: "",
+        category: "men",
+        new_price: "",
+        old_price: "",
       });
-      const uploadData = await uploadRes.json();
-
-      if (!uploadData.success) {
-        return showPopup("❌ Upload failed: " + (uploadData.message || "Image error"));
-      }
-
-      // Upload thumbnails
-      let thumbUrls = [];
-      for (let file of thumbImages) {
-        let thumbForm = new FormData();
-        thumbForm.append("product", file);
-
-        const res = await fetch("https://royal-stitch.onrender.com/api/upload", {
-          method: "POST",
-          headers: { Accept: "application/json" },
-          body: thumbForm,
-        });
-        const data = await res.json();
-        if (data.success) {
-          thumbUrls.push(data.image_url);
-        }
-      }
-
-      // Build final payload
-      const productPayload = {
-        ...designeDetail,
-        image: uploadData.image_url,
-        images: thumbUrls,
-      };
-
-      // Upload product
-      const addRes = await fetch("https://royal-stitch.onrender.com/api/addProduct", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(productPayload),
-      });
-
-      const result = await addRes.json();
-
-      if (result.product) {
-        showPopup("✅ Product added successfully!");
-
-        // Reset form
-        setDesigneDetail({
-          name: "",
-          image: "",
-          images: [],
-          description: "",
-          category: "men",
-          new_price: "",
-          old_price: "",
-        });
-        setImage(null);
-        setThumbImages([]);
-      } else {
-        showPopup("❌ Upload failed: " + (result.message || "Unknown error"));
-      }
-    } catch (err) {
-      console.error("Upload error:", err);
-      showPopup("❌ Something went wrong. Please try again.");
+      setImage(null);
+      setThumbImages([]);
+    } else {
+      showPopup("❌ Upload failed: " + (result.message || "Unknown error"));
     }
-  };
+  } catch (err) {
+    console.error("Upload error:", err);
+    showPopup("❌ Something went wrong. Please try again.");
+  }
+};
+
 
   return (
     <>
