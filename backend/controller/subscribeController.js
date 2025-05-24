@@ -32,7 +32,7 @@ export const subscibeUser = async (req, res) => {
           <p style="font-size: 16px; line-height: 1.6;">
             We’re thrilled to have you with us. Expect exclusive offers, early access to new embroidery collections, and behind-the-scenes looks at our finest handwork.
           </p>
-          <a href="http://localhost:3000.com" target="_blank" style="display: inline-block; margin-top: 20px; padding: 12px 24px; background-color: #111827; color: #ffffff; border-radius: 6px; text-decoration: none; font-weight: bold;">
+          <a href="https://royalstitch.vercel.app/" target="_blank" style="display: inline-block; margin-top: 20px; padding: 12px 24px; background-color: #111827; color: #ffffff; border-radius: 6px; text-decoration: none; font-weight: bold;">
             Explore Our Store
           </a>
         </div>
