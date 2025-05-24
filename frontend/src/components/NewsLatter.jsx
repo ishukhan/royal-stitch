@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
+import Swal from 'sweetalert2';
 
 const NewsLatter = () => {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState('');
-  const [showPopup, setShowPopup] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,7 +21,15 @@ const NewsLatter = () => {
       if (res.ok) {
         setStatus('');
         setEmail('');
-        setShowPopup(true); // Show popup on success
+
+        // ✅ SweetAlert success popup
+        Swal.fire({
+          title: '✅ Subscribed!',
+          text: 'Thank you for subscribing to Royal Stitch.',
+          icon: 'success',
+          confirmButtonText: 'OK',
+          confirmButtonColor: '#facc15', // Tailwind yellow-400
+        });
       } else {
         setStatus(data.message || '❌ Something went wrong.');
       }
@@ -60,24 +68,6 @@ const NewsLatter = () => {
 
         {status && <p className="text-sm text-gray-700 mt-2">{status}</p>}
       </div>
-
-      {/* ✅ Success Popup */}
-      {showPopup && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl shadow-xl p-6 max-w-xs text-center">
-            <h2 className="text-lg font-semibold mb-2">✅ Subscribed!</h2>
-            <p className="text-gray-700 mb-4">
-              Thank you for subscribing to Royal Stitch.
-            </p>
-            <button
-              onClick={() => setShowPopup(false)}
-              className="btn_dark_rounded px-6 py-2"
-            >
-              OK
-            </button>
-          </div>
-        </div>
-      )}
     </section>
   );
 };
