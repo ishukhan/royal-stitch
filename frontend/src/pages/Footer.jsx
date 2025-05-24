@@ -16,7 +16,9 @@ const Footer = () => {
           {/* Brand Section */}
           <div>
             <Link to="/" onClick={handleClick} className="text-2xl font-bold text-gray-900">
-              Shopee
+              <h3 className="text-2xl font-bold text-yellow-500 tracking-wider group-hover:text-yellow-400 transition-colors duration-300 italic drop-shadow-md decoration-wavy underline underline-offset-4">
+            Royal Stitch
+          </h3>
             </Link>
             <p className="text-sm text-gray-600 mt-4 max-w-xs">
               Discover the art of intricate embroidery at Royal Stich. Where every stitch tells a story, blending tradition with modern elegance.

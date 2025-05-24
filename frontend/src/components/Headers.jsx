@@ -24,13 +24,9 @@ const Headers = () => {
     <header className="fixed top-0 left-0 w-full bg-white shadow-md ring-1 ring-slate-900/5 z-50">
       <div className="mx-auto w-full max-w-screen-xl px-6 py-4 flexBetween max-xs:px-4">
         <Link to="/">
-          <img
-            src={logo}
-            alt="logo"
-            height={60}
-            width={60}
-            className="hover:opacity-90 transition-opacity duration-300"
-          />
+          <h3 className="text-2xl font-bold text-yellow-500 tracking-wider group-hover:text-yellow-400 transition-colors duration-300 italic drop-shadow-md decoration-wavy underline underline-offset-4">
+            Royal Stitch
+          </h3>
         </Link>
 
         {/* Navbar Desktop */}

@@ -28,7 +28,9 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         {/* Left: Logo */}
         <div className="flex items-center gap-3">
-          <img src={logo} alt="logo" className="h-10 w-auto" />
+          <h3 className="text-2xl font-bold text-yellow-500 tracking-wider group-hover:text-yellow-400 transition-colors duration-300 italic drop-shadow-md decoration-wavy underline underline-offset-4">
+            Royal Stitch
+          </h3>
           <h1 className="text-xl sm:text-2xl font-bold text-gray-800">Admin Panel</h1>
         </div>
 
