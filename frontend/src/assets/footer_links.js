@@ -3,10 +3,10 @@
   {
     title: "Learn More",
     links: [
-      "About Us",
-      "Categories",
-      "Privacy Policy",
-      "Terms and Conditions",
+      { name: "About Us", path: "/about-us" },
+      { name: "Contact Us", path: "/contact-us" },
+      { name: "Privacy Policy", path: "/privacy-policy" },
+      { name: "Terms and Conditions", path: "/terms-and-conditions" },
     ],
   },
   // {
