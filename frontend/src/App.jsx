@@ -37,7 +37,7 @@ export default function App() {
           <Route path="/product" element={<Product />}>
             <Route path=":productId" element={<Product />} />
           </Route>
-          <Route path="/about" element={<About />} />
+          <Route path="/about-us" element={<About />} />
           <Route path="/contact-us" element={<Contact />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-and-conditions" element={<TermsAndConditon />} />
