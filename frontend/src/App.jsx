@@ -5,6 +5,9 @@ import Category from "./pages/Category";
 import Product from "./pages/Product";
 import Footer from "./pages/Footer";
 import About from "./pages/About";
+import Contact from "./pages/Contact";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsAndConditon from "./pages/TermsAndConditions";
 // import images
 import bannermens from "./assets/categorybanner/mens.png";
 import bannerwomens from "./assets/categorybanner/womens.png";
@@ -35,6 +38,9 @@ export default function App() {
             <Route path=":productId" element={<Product />} />
           </Route>
           <Route path="/about" element={<About />} />
+          <Route path="/contact-us" element={<Contact />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms-and-conditions" element={<TermsAndConditon />} />
         </Routes>
         <Footer />
       </BrowserRouter>
