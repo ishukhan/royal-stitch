@@ -30,9 +30,9 @@ const Footer = () => {
             <FooterColumn title={col.title} key={col.title}>
               <ul className="space-y-2 text-sm text-gray-600">
                 {col.links.map((link) => (
-                  <li key={link}>
-                    <Link to="/" className="hover:text-black transition-all duration-200">
-                      {link}
+                  <li key={link.name}>
+                    <Link to={link.path} className="hover:text-black transition-all duration-200">
+                      {link.name}
                     </Link>
                   </li>
                 ))}
