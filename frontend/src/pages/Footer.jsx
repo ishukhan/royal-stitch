@@ -31,7 +31,7 @@ const Footer = () => {
               <ul className="space-y-2 text-sm text-gray-600">
                 {col.links.map((link) => (
                   <li key={link.name}>
-                    <Link to={link.path} className="hover:text-black transition-all duration-200">
+                    <Link to={link.path} onClick={handleClick} className="hover:text-black transition-all duration-200">
                       {link.name}
                     </Link>
                   </li>
